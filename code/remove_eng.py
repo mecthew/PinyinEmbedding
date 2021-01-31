@@ -57,6 +57,15 @@ def tag_non_punctuations(corpus_path, non_pinyin_path, punctuations_path, replac
             fout.write(' '.join(tokens) + '\n')
 
 
+def save_pinyin_dict(corpus_path, output_path):
+    with open(corpus_path, 'r') as fin, open(output_path, 'w', encoding='utf8') as fout:
+        word_dict = set()
+        for line in fin.readlines():
+            tokens = line.strip().split()
+            word_dict = word_dict.union(set(tokens))
+        fout.write('\n'.join(list(word_dict)))
+
+
 # 去掉类似café的音调
 def strip_accents(s):
     return ''.join(c for c in unicodedata.normalize('NFD', s)
