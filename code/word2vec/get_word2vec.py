@@ -11,7 +11,7 @@ def get_wordvec(corpus_path, vec_save_path, embedding_dim):
     # 训练模型
     # alpha为初始learning rate
     model = word2vec.Word2Vec(sentences, size=embedding_dim, alpha=0.025,
-                              hs=0, min_count=1, window=5, iter=10)
+                              hs=0, min_count=1, window=5, iter=10, workers=8)
     # model.save(model_name)
     model.wv.save_word2vec_format(vec_save_path, binary=False)
 

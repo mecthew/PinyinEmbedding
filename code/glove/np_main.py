@@ -11,15 +11,11 @@ def main_entry(argv):
     embedding_dim = int(argv[1])
     learning_rate = 0.005
     max_iter = 10000
-    corpus_path = '../../data/corpus/wiki.1000.txt'
+    corpus_path = '../../data/corpus/pinyin_wiki_all.txt'
     dictionary_path = '../../data/dictionary/pinyin_dict.txt'
-    corpus_obj_output_path = f'../../output/corpus_obj_{embedding_dim}d'
-    output_dir, log_dir = '../../output', '../../output/log_dir'
+    corpus_obj_output_path = f'../../output/glove/corpus_obj_{embedding_dim}d'
+    output_dir, log_dir = '../../output/glove', '../../output/log_dir'
     embedding_save_path = output_dir + f'/glove_num5_{0}.{embedding_dim}d'
-    embedding_cnt = 0
-    while os.path.exists(embedding_save_path):
-        embedding_cnt += 1
-        embedding_save_path = re.sub('_\d+\.', f'_{embedding_cnt}.', embedding_save_path)
 
     os.makedirs(output_dir, exist_ok=True)
     os.makedirs(log_dir, exist_ok=True)
@@ -61,16 +57,8 @@ def main_entry(argv):
         for i, wv in enumerate(wordvectors):
             wvf.write(vocab[i] + ' ' + str(list(wv))[1:-1].replace(', ', ' ') + '\n')
 
+
 if __name__ == '__main__':
 
     main_entry(sys.argv)
-    # 读取wordvectors
-    # with open('../../output/glove100.wv', 'r') as rvf:
-    #     vectors = []
-    #     vocabs = []
-    #     for line in rvf.readlines():
-    #         vectors.append([])
-    #         items = line.strip().split(' ')
-    #         vectors[-1].extend([float(num) for num in items[1:].split(' ')])
-    #         vocabs.append(items[0])
-    #     print(vocabs)
+
