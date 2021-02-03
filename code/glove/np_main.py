@@ -15,7 +15,7 @@ def main_entry(argv):
     dictionary_path = '../../data/dictionary/pinyin_dict_ner.txt'
     corpus_obj_output_path = f'../../output/glove/corpus_obj_{embedding_dim}d'
     output_dir, log_dir = '../../output/glove', '../../output/log_dir'
-    embedding_save_path = output_dir + f'/glove_num5_{0}.{embedding_dim}d'
+    embedding_save_path = output_dir + f'/glove_num5.{embedding_dim}d'
 
     os.makedirs(output_dir, exist_ok=True)
     os.makedirs(log_dir, exist_ok=True)
@@ -53,6 +53,10 @@ def main_entry(argv):
             if corpus_obj.matrix[i][j] > 0.:
                 corpus_obj.matrix[j][i] = corpus_obj.matrix[i][j]
     wordvectors = glove.fit(corpus_obj.matrix).round(decimals=6)
+
+    # add vocabulary size
+    embedding_save_path = embedding_save_path.rsplit('.', maxsplit=1)[0] + f'.{len(wordvectors)}.' \
+                            + embedding_save_path.rsplit('.', maxsplit=1)[-1]
     with open(embedding_save_path, 'w') as wvf:
         wvf.write(f'{len(wordvectors)} {embedding_dim}\n')
         for i, wv in enumerate(wordvectors):

@@ -42,9 +42,9 @@ def generate_pinyin_corpus(corpus_path, output_path, punctuations_path,
         for pinyins in pinyin_list:
             fout.write(' '.join(pinyins) + '\n')
         with open(save_dict_path, 'w', encoding='utf8') as fout3:
-            fout3.write('\n'.join(list(corpus_set)))
+            fout3.write('\n'.join(list(corpus_set)) + '\n')
         with open(non_pinyin_character_path, 'w', encoding='utf8') as fout2:
-            fout2.write('\n'.join(list(non_pinyin_set)))
+            fout2.write('\n'.join(list(non_pinyin_set)) + '\n')
         print(f'Total lines: {total_num}; Non-eng rate: {(total_num - mix_eng_num) / total_num};'
               f' Mix-eng rate: {mix_eng_num / total_num}')
         print(f"Finish transformation, cost {time.time() - t_start}s for {total_num} sentences")
