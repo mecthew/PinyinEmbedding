@@ -2,6 +2,7 @@ import multiprocessing
 import re
 import time
 from itertools import repeat
+import os
 
 import unicodedata
 from pypinyin import lazy_pinyin, Style
@@ -129,6 +130,26 @@ def save_pinyin_dict(corpus_path, output_path):
             word_dict = word_dict.union(set(tokens))
         fout.write('\n'.join(list(word_dict)))
 
+
+def convert_ner_corpus_to_txt(corpus_path, output_path):
+    fout = open(output_path, 'w', encoding='utf8')
+    for prefix in ['train', 'dev', 'test']:
+        try:
+            fin = open(os.path.join(corpus_path, f'{prefix}.char.bmoes'), 'r', encoding='utf8')
+            sentences = []
+            sentence = []
+            for line in fin.readlines():
+                tokens = line.strip().split()
+                if len(tokens) > 1:
+                    sentence.append(tokens[0])
+                else:
+                    if sentence:
+                        sentences.append(''.join(sentence))
+                        sentence = []
+
+            fout.write('\n'.join(sentences) + '\n')
+        except Exception as e:
+            print(e)
 
 # 去掉类似café的音调
 def strip_accents(s):
