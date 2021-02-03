@@ -11,8 +11,8 @@ def main_entry(argv):
     embedding_dim = int(argv[1])
     learning_rate = 0.005
     max_iter = 10000
-    corpus_path = '../../data/corpus/pinyin_wiki_all.txt'
-    dictionary_path = '../../data/dictionary/pinyin_dict.txt'
+    corpus_path = '../../data/corpus/pinyin_wiki_ner.txt'
+    dictionary_path = '../../data/dictionary/pinyin_dict_ner.txt'
     corpus_obj_output_path = f'../../output/glove/corpus_obj_{embedding_dim}d'
     output_dir, log_dir = '../../output/glove', '../../output/log_dir'
     embedding_save_path = output_dir + f'/glove_num5_{0}.{embedding_dim}d'
@@ -21,10 +21,11 @@ def main_entry(argv):
     os.makedirs(log_dir, exist_ok=True)
 
     # 读取出现频次最高的400k个词作为词汇表
-    vocab = []
+    vocab = set()
     with open(dictionary_path, 'r') as vbf:
         for line in vbf.readlines():
-            vocab.append(line.strip())
+            vocab.add(line.strip())
+    vocab = list(vocab)
 
     # 建立词典，统计共现矩阵
     dictionary = {}
