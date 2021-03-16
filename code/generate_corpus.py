@@ -15,6 +15,18 @@ def generate_pinyin_corpus(corpus_path, output_path, punctuations_path,
                            eng_replace_word='[ENG]', digit_replace_word='[DIGIT]',
                            unk_replace_word='[UNK]',
                            max_lines=None):
+    """
+        将中文文本转成为pinyin语料，并保存到output_path，pinyin字典保存为save_dict_path
+    :param corpus_path:
+    :param output_path:
+    :param punctuations_path:
+    :param save_dict_path:
+    :param eng_replace_word:
+    :param digit_replace_word:
+    :param unk_replace_word:
+    :param max_lines:
+    :return:
+    """
     t_start = time.time()
     non_pinyin_set = set()
     corpus_set = set()
@@ -53,6 +65,16 @@ def generate_pinyin_corpus(corpus_path, output_path, punctuations_path,
 def multiprocess_text2pinyin(corpus, punctuations,
                              eng_replace_word, digit_replace_word, unk_replace_word,
                              num_thread=NCPU):
+    """
+        多进程-文本转成pinyin
+    :param corpus:
+    :param punctuations:
+    :param eng_replace_word:
+    :param digit_replace_word:
+    :param unk_replace_word:
+    :param num_thread:
+    :return:
+    """
     corpus_size = len(corpus)
     text_blocks = []
     for i in range(num_thread):
@@ -76,6 +98,12 @@ def multiprocess_text2pinyin(corpus, punctuations,
 
 
 def text2pinyin(texts, args):
+    """
+        文本转成pinyin文本
+    :param texts:
+    :param args:
+    :return:
+    """
     punctuations, eng_replace_word, digit_replace_word, unk_replace_word = args
     mix_eng_num = 0
     pinyin_list = []
@@ -98,6 +126,15 @@ def text2pinyin(texts, args):
 
 def clean_pinyins(pinyin_list, punctuations,
                   eng_replace_word, digit_replace_word, unk_replace_word):
+    """
+        清洗数据，目的主要是在pypinyin自动转换中文语句为pinyin语句时，可能存在多个”标点符号、未知符号“连着的情况，将它们拆解成单个token
+    :param pinyin_list:
+    :param punctuations:
+    :param eng_replace_word:
+    :param digit_replace_word:
+    :param unk_replace_word:
+    :return:
+    """
     processed_list = []
     for pinyin in pinyin_list:
         # 英文或数字
@@ -132,6 +169,12 @@ def save_pinyin_dict(corpus_path, output_path):
 
 
 def convert_ner_corpus_to_txt(corpus_path, output_path):
+    """
+        此函数作用是将NER数据集转换成txt文件，可作为pinyin训练的语料
+    :param corpus_path:
+    :param output_path:
+    :return:
+    """
     fout = open(output_path, 'w', encoding='utf8')
     for prefix in ['train', 'dev', 'test']:
         try:
@@ -151,7 +194,12 @@ def convert_ner_corpus_to_txt(corpus_path, output_path):
         except Exception as e:
             print(e)
 
-# 去掉类似café的音调
+
 def strip_accents(s):
+    """
+        去掉类似café的音调
+    :param s:
+    :return:
+    """
     return ''.join(c for c in unicodedata.normalize('NFD', s)
                    if unicodedata.category(c) != 'Mn')
