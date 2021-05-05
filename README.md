@@ -7,3 +7,4 @@
    1. 使用generate_pinyin_corpus函数先生成pinyin训练语料
    1. python main [embedding_dim] 生成word2vec embedding（main.py文件，可自行修改）
    2. python np_main [embedding_dim] 生成glove embedding（glove/np_main.py文件） 
++ 代码可看lj103：/home/liujian/qmc/PinyinEmbedding
